@@ -1,0 +1,6 @@
+#pragma once
+enum codes { ESC = 27, ENTER = 13, FIRST_CODE = 224, KEY_UP = 72, KEY_DOWN = 80, KEY_LEFT = 75, KEY_RIGHT = 77, SPACE = 32, E = 69, e = 101 };
+enum field_type {EMPTY, ALIVE, DENIED, WOUNDED, DEAD};
+enum direction{UP, RIGHT, DOWN, LEFT, UP_RIGHT, RIGHT_DOWN, DOWN_LEFT, LEFT_UP};
+enum symbols { SHIP_ALIVE = 219, BOARD_EMPTY = 176, CROSSHAIR = 206 };
+enum board_mode { GAMING_MODE = 0, PLACING_MODE = 1, SELECTING_MODE = 2, EDITING_MODE = 3};
