@@ -14,6 +14,7 @@ void FillAuto(Ship* ships, int shipsCount, Board board)
 		Ship ship = ships[i];
 		SetShip(ships, shipsCount, ship, boardSize);
 	}
+	board.mode = board_mode::GAMING_MODE;
 }
 
 void FillManual(Ship* ships, int shipsCount, Board board)
@@ -25,13 +26,11 @@ void FillManual(Ship* ships, int shipsCount, Board board)
 		Ship shipPrev = ships[i];
 		PlaceShipOnInitialPlace(ship);
 
-		int keyCode;
 		while (true)
 		{
 			ClearConsole();
-			PrintBoard(ships, shipsCount, board, boardSize, true, board.mode == board_mode::SELECTING_MODE);
-			keyCode = _getch();
-
+			PrintBoard(ships, shipsCount, board, board.mode == board_mode::SELECTING_MODE);
+			int keyCode = _getch();
 			if (keyCode == codes::ENTER) {
 				if (board.mode == board_mode::SELECTING_MODE) {
 					board.mode = board_mode::EDITING_MODE;
@@ -81,6 +80,8 @@ void FillManual(Ship* ships, int shipsCount, Board board)
 			}
 		}
 	}
+
+	board.mode = board_mode::GAMING_MODE;
 }
 
 Ship* InitShipArray(int* shipSizes, int shipsCount) {
@@ -116,7 +117,7 @@ void MoveShip(Ship ship, int keyCode, int boardSize) {
 	}
 }
 
-Board CreateBoard(int size)
+Board CreateBoard(int size, bool isHumanBoard)
 {
 	Board board = Board();
 	board.size = size;
@@ -245,8 +246,9 @@ bool CanSetPoint(Ship* ships, int shipsCount, int boardSize, Coord start, int di
 		return false;
 }
 
-void PrintBoard(Ship* ships, int shipsCount, Board board, int boardSize, bool isPlayerBoard, bool drawCrosshair)
+void PrintBoard(Ship* ships, int shipsCount, Board board, bool drawCrosshair)
 {
+	int boardSize = board.size;
 	for (int i = 0; i < boardSize; ++i)
 	{
 		for (int j = 0; j < boardSize; ++j)
@@ -257,16 +259,16 @@ void PrintBoard(Ship* ships, int shipsCount, Board board, int boardSize, bool is
 			ShipField* shipField = GetShipFieldByCoord(ships, shipsCount, coord);
 
 			if (drawCrosshair && board.crosshairCoords.y == i && board.crosshairCoords.x == j) {
-				cout << (char)symbols::CROSSHAIR;
+				cout << static_cast<char>(symbols::CROSSHAIR);
 			}
 			else {
-				if (shipField != NULL) {
+				if (shipField != nullptr) {
 					if ((*shipField).type == field_type::ALIVE) {
-						cout << (char)symbols::SHIP_ALIVE;
+						cout << static_cast<char>(symbols::SHIP_ALIVE);
 					}
 				}
 				else {
-					cout << (char)symbols::BOARD_EMPTY;
+					cout << static_cast<char>(symbols::BOARD_EMPTY);
 				}
 			}
 		}

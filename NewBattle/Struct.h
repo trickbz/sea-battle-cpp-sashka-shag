@@ -45,4 +45,5 @@ struct Board {
 	int** fields;
 	Coord crosshairCoords;
 	int mode;
+	bool isHumanBoard;
 };
