@@ -23,7 +23,6 @@ void FillManual(Ship* ships, int shipsCount, Board board)
 	{
 		Ship ship = ships[i];
 		Ship shipPrev = ships[i];
-		int shipSize = ship.size;
 		PlaceShipOnInitialPlace(ship);
 
 		int keyCode;
@@ -67,16 +66,15 @@ void FillManual(Ship* ships, int shipsCount, Board board)
 
 			if (keyCode == codes::SPACE) {
 				int nextDirection = ship.direction == direction::DOWN ? direction::RIGHT : direction::DOWN;
-				Coord* rotatedShipCoords = GenerateShipCoords(ship.fields[0].coord, shipSize, nextDirection, boardSize);
-				if (AreAllCoordsInsideBoard(rotatedShipCoords, shipSize)) {
-					for (int i = 1; i < shipSize; i++) {
+				Coord* rotatedShipCoords = GenerateShipCoords(ship.fields[0].coord, ship.size, nextDirection, boardSize);
+				if (AreAllCoordsInsideBoard(rotatedShipCoords, ship.size)) {
+					for (int i = 1; i < ship.size; i++) {
 						ship.direction = nextDirection;
 						ship.fields[i].coord = rotatedShipCoords[i];
 					}
 				}
 			}
 
-			// edit mode
 			if ((keyCode == codes::E || keyCode == codes::e) && board.mode == board_mode::PLACING_MODE) {
 				board.mode = board_mode::SELECTING_MODE;
 				ClearShipCoords(ship);
